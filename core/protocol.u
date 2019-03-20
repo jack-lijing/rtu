@@ -1,0 +1,18 @@
+#include	"csapp.h"
+#include	"rtu.h"
+#include	"uartconfig.h"
+
+void sendCommand(int fd,unsigned char c[])
+{
+}
+
+int check_Msg(Dsp *R)
+{
+	UC *m = &R->drecv[0];
+
+	if (m[1] != 0xFF || m[0] != 0xff )
+	{
+		printf("Error Message Format\n");
+		return ERRFORMAT;
+	}
+	if(m[2] > 16*3)	//涓嬩綅鏈烘渶澶
