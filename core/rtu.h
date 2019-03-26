@@ -95,12 +95,16 @@ typedef struct {
 extern "C" {
 #endif
 
+extern int testdtu();
+
+extern Env *E;
+extern Dsp *R;
 
 /*******	以下部分为数据层业务调用API		****************/
 
-extern void initEnv(Env *E,char *logbuf,void *dbcon,int dspfd,int dtufd);
-extern int reflushdspset(Env *E);          //从数据库查询dspset并填充到E->dspset
+extern void initEnv(int dspbandrate);
 
+extern int reflushdspset(Env *E);          //从数据库查询dspset并填充到E->dspset
 extern int gendspqueryone(UC deviceid,UC cmdtype,UC regstart, UC rnum, Dsp *R);
 extern int gendspmodifyone(UC deviceid,UC cmdtype,UC rnum, Reg* regs, Dsp *R);
 extern int sendquerycommandtoalldsp(UC cmdtype,UC regnum, Dsp *R, Env *E);//向所有dsp发生查询命令 cmdtype指定命令id, regnum指定查询寄存器数据

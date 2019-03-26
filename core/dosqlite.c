@@ -57,6 +57,7 @@ int savetodb(Dsp *R, Env *E)
 	sqlite3 *con = (sqlite3 *)E->db;
 	DB_exec(con,sql,callback, NULL);
     free(sql);
+    return 0;
 }
 
 
@@ -65,6 +66,7 @@ int setupdspset(Env *E)
 	DB_exec((sqlite3 *)E->db,"drop table dspset;",NULL,NULL);
 	printf("Create dspset table\n");
 	DB_exec((sqlite3 *)E->db,"create table dspset(did int primary key not null);",NULL,NULL);
+    return 0;
 }
 
 int insertdspid(UC dspid,Env *E)
@@ -74,6 +76,7 @@ int insertdspid(UC dspid,Env *E)
 	DB_exec((sqlite3 *)E->db,sql,NULL,NULL);
 	printf("insert dsp id:%s\n",sql);
 	free(sql);
+    return 0;
 }
 
 /* 
@@ -95,7 +98,7 @@ int reflushdspset(Env *E)
 	}
 	E->dspset[0] = (UC)nRow;
 	printf("dspset total:%d\n",E->dspset[0]);
-    int i = 0;
+    int i;
     for(i = 1 ; i <= nRow; i++)
 	{
 		E->dspset[i]=(UC)atoi(pResult[i]);
@@ -120,4 +123,6 @@ int resetDB(Env *E)
 	DB_exec((sqlite3 *)E->db,"create table status(id integer PRIMARY key autoincrement,device int NOT NULL,r0 int,r0v int,r1 int, r1v int, r2 int, r2v int,r3 int,r3v int, r4 int,r4v int,r5 int, r5v int, r6 int,r6v int , sec int not null,date text not null);",NULL,NULL);
     DB_exec((sqlite3 *)E->db,"drop table dspset;",NULL,NULL);
     DB_exec((sqlite3 *)E->db,"create table dspset(did integer PRIMARY key not null);",NULL,NULL);
+
+    return 0;
 }

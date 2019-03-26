@@ -3,6 +3,40 @@
 #include	"uartconfig.h"
 
 
+/***全局变量***/
+Env *E;
+Dsp *R;
+
+void initEnv(int dspbandrate)
+{
+    E = (Env *)Calloc(1,sizeof(Env));
+    R = (Dsp *)Calloc(1,sizeof(Dsp));
+
+    /**********初始化全局变量***********************/
+    int logbuf = (char *)Calloc(3000,1);
+
+    int dspfd = Uart_open("/dev/ttymxc1");
+    Uart_485(dspfd);
+    Uart_config(dspfd, dspbandrate);
+
+
+    int dtufd =Uart_open("/dev/ttymxc2");
+    Uart_485(dtufd);
+    Uart_config(dtufd, B115200);
+
+    void *db =DB_init();
+
+    E->logbuf = logbuf;
+    E->dspfd = dspfd;
+    E->db = db;
+    E->dtufd = dtufd;
+    E->dtuinfo = NULL;
+
+    reflushdspset(E);
+    initlocaltime(E);
+    initdtuinfo(E);
+}
+
 
 int check_Msg(Dsp *R)
 {
@@ -373,6 +407,7 @@ int setlocalsec(Env *E)
 int initlocaltime(Env *E)
 {
     UC s[6] = {0xFF,0xFF,0x01,0x10,0x8C,0xBE};
+
     int ch = Uart_send(E->dtufd, s, sizeof(s),E->logbuf);
 	//recv second from dtu
 	int drlen = 0;
@@ -380,17 +415,17 @@ int initlocaltime(Env *E)
    if(drlen == DTURESP)dodtuMsg(E);
 }
 
-void initEnv(Env *E,char *logbuf,void *dbcon,int dspfd,int dtufd)
+int testdtu()
 {
-	E->logbuf = logbuf;
-	E->dspfd = dspfd;
-	E->db = dbcon;
-	E->dtufd = dtufd;
-	E->dtuinfo = NULL;
-    reflushdspset(E);
-	initlocaltime(E);
-	initdtuinfo(E);
+    int len = 1024;
+    UC s[len];
+    memset(s,0x41,len);
+    s[2]=len-3;
+    int ch = Uart_send(E->dtufd, s, len,E->logbuf);
+    printf("send %d\n",ch);
 }
+
+
 
 //对dtu 返回信息进行解析,正确就调整时钟并返回0, 错误返回1,上层redo
 int dodtuMsg(Env *E){

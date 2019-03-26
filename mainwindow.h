@@ -10,6 +10,7 @@
 #include    "dspthread.h"
 #include    "dtuthread.h"
 #include    "mythread.h"
+#include	"rtu.h"
 #include    <termios.h>
 
 #include    <QCoreApplication>
@@ -38,8 +39,9 @@ public:
     explicit   MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void dealReport(int num);
-    Env *E ;
-    Dsp *R ;
+
+//    Env *E ;
+//    Dsp *R ;
 
 private:
     char *logbuf;

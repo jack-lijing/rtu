@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.8.1, 2019-03-19T11:40:55. -->
+<!-- Written by QtCreator 4.8.2, 2019-03-25T13:17:40. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -74,7 +74,7 @@
    <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
    <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
    <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/lijing/Programme/rtu/build-huapeng-ARM-Debug</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/home/lijing/store/Programme/rtu/build-huapeng-ARM-Debug</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
@@ -258,7 +258,7 @@
       <value type="qulonglong" key="RemoteLinux.CheckForFreeDiskSpaceStep.RequiredSpace">5242880</value>
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
-      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">false</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Kill current application instance</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.KillAppStep</value>
@@ -270,14 +270,26 @@
      </valuemap>
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.2">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
-      <value type="QString" key="ProjectExplorer.ProcessStep.Arguments">/home/lijing/Programme/rtu/build-huapeng-ARM-Debug/huapeng root@rtu:/opt/rtu</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run custom remote command</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinux.GenericRemoteLinuxCustomCommandDeploymentStep</value>
+      <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedFiles"/>
+      <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedHosts"/>
+      <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedRemotePaths"/>
+      <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedSysroots"/>
+      <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedTimes"/>
+      <value type="QString" key="RemoteLinuxCustomCommandDeploymentStep.CommandLine">/usr/bin/pkill huapeng</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.3">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProcessStep.Arguments">/home/lijing/store/Programme/rtu/build-huapeng-ARM-Debug/huapeng root@rtu:/opt/rtu</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.Command">scp</value>
       <value type="QString" key="ProjectExplorer.ProcessStep.WorkingDirectory">%{buildDir}</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Custom Process Step</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.ProcessStep</value>
      </valuemap>
-     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.3">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.4">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">false</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Upload files via SFTP</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
@@ -290,7 +302,7 @@
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.IgnoreMissingFiles">false</value>
       <value type="bool" key="RemoteLinux.GenericDirectUploadStep.Incremental">true</value>
      </valuemap>
-     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.4">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.5">
       <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Run custom remote command</value>
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
@@ -302,7 +314,7 @@
       <valuelist type="QVariantList" key="ProjectExplorer.RunConfiguration.LastDeployedTimes"/>
       <value type="QString" key="RemoteLinuxCustomCommandDeploymentStep.CommandLine">/opt/rtu/huapeng</value>
      </valuemap>
-     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">5</value>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">6</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy</value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Deploy</value>
@@ -357,8 +369,8 @@
     <value type="int" key="PE.EnvironmentAspect.Base">1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">huapeng (on dasheng)</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/home/lijing/Programme/rtu/huapeng/huapeng.pro</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">huapeng (on dasheng)2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">RemoteLinuxRunConfiguration:/home/lijing/store/Programme/rtu/huapeng/huapeng.pro</value>
     <value type="int" key="RemoteLinux.EnvironmentAspect.Version">1</value>
     <value type="QString" key="RemoteLinux.RunConfig.AlternateRemoteExecutable"></value>
     <value type="bool" key="RemoteLinux.RunConfig.UseAlternateRemoteExecutable">false</value>
@@ -612,7 +624,7 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">huapeng</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:/home/lijing/Programme/rtu/huapeng/huapeng.pro</value>
-    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">huapeng.pro</value>
+    <value type="QString" key="Qt4ProjectManager.Qt4RunConfiguration.ProFile">../../../../Programme/rtu/huapeng/huapeng.pro</value>
     <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
@@ -622,7 +634,7 @@
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
     <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">/home/lijing/Programme/rtu/build-huapeng-Desktop-Debug</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
    </valuemap>
    <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

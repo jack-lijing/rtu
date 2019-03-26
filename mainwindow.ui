@@ -26,13 +26,13 @@
    <property name="minimumSize">
     <size>
      <width>800</width>
-     <height>480</height>
+     <height>502</height>
     </size>
    </property>
    <property name="maximumSize">
     <size>
      <width>800</width>
-     <height>480</height>
+     <height>502</height>
     </size>
    </property>
    <property name="font">
@@ -160,9 +160,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>390</y>
+      <y>381</y>
       <width>731</width>
-      <height>61</height>
+      <height>71</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">

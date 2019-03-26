@@ -647,7 +647,7 @@ int runlog(char * file, int line, char * msg, ...)
    FILE * fp;
    int fd;
    char rq[8+1];
-   char path[80], buff[512];
+   char path[80], buff[3000];
 
 
    va_start(args, msg);

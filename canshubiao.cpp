@@ -14,7 +14,7 @@ canshubiao::canshubiao(QWidget *parent) :
     ui->setupUi(this);
     offset = 0;
     step = 10;
-    showtable(offset);
+   // showtable(offset);
     ui->prev->setDisabled(true);
     connect(ui->fanhui,SIGNAL(clicked()), this, SLOT(hideCSB()));
 }

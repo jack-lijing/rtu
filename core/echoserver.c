@@ -1,6 +1,7 @@
 #include "csapp.h"
 
 void echo(int conn);
+void readnb(int conn);
 
 int main(int argc, char *argv[])
 {/*
@@ -22,10 +23,26 @@ int main(int argc, char *argv[])
 		printf("Client Connect: %s:%d\n", inet_ntoa(caddr.sin_addr), caddr.sin_port);
 		//char *sbuf = "123456789ab";
 		//Rio_writen(conn, sbuf, n);
-		echo(conn);
+//		echo(conn);
+		readnb(conn);
 	//	Close(conn);
 	}
 	exit(0);
+}
+
+void readnb(int conn)
+{
+	rio_t rio;
+	Rio_readinitb(&rio, conn);
+	char usrbuf[2046];
+	char len[3];
+	int n =0;
+	n = (int)Rio_readnb(&rio,len,3);
+	if(len[2] > 0)
+		n=(int)Rio_readnb(&rio,usrbuf,2046);
+	
+	printf("server receive %d bytes\n",n);
+	dumpBuffer(usrbuf,n);
 }
 
 void echo(int conn)

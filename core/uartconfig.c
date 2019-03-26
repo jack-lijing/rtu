@@ -79,8 +79,8 @@ int Uart_send(int fd, char *buf_send, int buf_len, char *logbuf)
      //   dumpBuffer(buf_send,buf_len);
         if(logbuf != NULL)
         {
-            i2ascii(logbuf,buf_send,buf_len);
-            runlog("",0,":Send[%s]",logbuf);
+           i2ascii(logbuf,buf_send,buf_len);
+           runlog("",0,":Send[%s]",logbuf);
         }
 		return len;
 	}

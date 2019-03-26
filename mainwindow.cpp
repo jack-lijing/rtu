@@ -32,6 +32,8 @@ MainWindow::MainWindow(QWidget *parent) :
         break;
     }
 
+    initEnv(bandrate);
+
     runlog("",2,"RTU START:Devices %d DSPTimer %d minutes DTUTimer %d hours bandrate %d",
            devices,set->value("dsptimer").toInt(),set->value("dtutimer").toInt(),b);
     ui->setupUi(this);
@@ -51,26 +53,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->yx,SIGNAL(clicked()), this, SLOT(startRTU()));
     connect(ui->tz,SIGNAL(clicked()), this, SLOT(stopRTU()));
 
-    /**********初始化全局变量***********************/
-    logbuf = (char *)Calloc(1024,1);
 
-    E = (Env *)Calloc(1,sizeof(Env));
-    R = (Dsp *)Calloc(1,sizeof(Dsp));
-
-    int dspfd = Uart_open("/dev/ttymxc1");
-    Uart_485(dspfd);
-    Uart_config(dspfd, bandrate);
-
-    sleep(5);
-
-    int dtufd =Uart_open("/dev/ttymxc2");
-    Uart_485(dtufd);
-    Uart_config(dtufd, bandrate);
-
-    void *db =DB_init();
-
-
-    initEnv(E,logbuf,db,dspfd,dtufd);
 
     dspthd = new dspthread(E,R);
     connect(dspthd,SIGNAL(signal_dsp_status(int,int)), this, SLOT(displayDSP_slot(int,int)));
@@ -90,6 +73,7 @@ MainWindow::MainWindow(QWidget *parent) :
     if(autodsp == 1)startRTU();
     //on_scan_clicked();
    // updateLog(E);
+    testdtu();
 }
 
 
@@ -153,6 +137,7 @@ void MainWindow::displayDSP_slot(int num, int status)
         ui->dspprocess->setText("此轮查询完毕！");
 
         //系统首次启动，在第一次查询dsp结束后发送dtu信息
+       // updateDTU();
         if(first)
         {
             updateDTU();
@@ -264,6 +249,8 @@ void MainWindow::showSZ()
 
 void MainWindow::showCSB()
 {
+   // csb = new canshubiao();
+    csb.showtable(10);
     csb.show();
     this->hide();
 }
@@ -276,12 +263,13 @@ void MainWindow::hideSZ()
 
 void MainWindow::hideCSB()
 {
-    csb.hide();
+  //  csb->hide();
     this->show();
 }
 
 void MainWindow::showZTB()
 {
+    ztb.showtable(10);
     ztb.show();
     this->hide();
 }
@@ -360,6 +348,7 @@ void MainWindow::on_uploadlog_clicked()
 {
      //QProcess::execute("ls -t /root/ |grep 'log' | head -n 1 | xargs tar -cf /root/upload.gzip");
    // updateLog(E);
-    initlocaltime(E);
+   // initlocaltime(E);
+    testdtu();
 
 }
