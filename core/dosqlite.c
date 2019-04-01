@@ -50,9 +50,9 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName){
 }
 
 
-int savetodb(Dsp *R, Env *E)
+int savetodb(Dsp *R)
 {
-	char *sql = (char *)calloc(1000,1);
+    char *sql = (char *)calloc(1024,1);
 	fill_sql(sql,R);
 	sqlite3 *con = (sqlite3 *)E->db;
 	DB_exec(con,sql,callback, NULL);
@@ -80,7 +80,7 @@ int insertdspid(UC dspid,Env *E)
 }
 
 /* 
- * 1 从数据库中取出 dsp id集合,保存在Env中 ,Env->dspset[0]为dsp总数,dspset[1]为dsp地址1等
+ * 1 从数据库中取出 dsp id集合,保存在Env中 ,Env->ids[0]为dsp总数,dspset[1]为dsp地址1等
  * */
 int reflushdspset(Env *E)
 {
@@ -96,13 +96,13 @@ int reflushdspset(Env *E)
 		sqlite3_free(errmsg);
 		return nResult;
 	}
-	E->dspset[0] = (UC)nRow;
-	printf("dspset total:%d\n",E->dspset[0]);
+	E->ids[0] = (UC)nRow;
+	printf("ids total:%d\n",E->ids[0]);
     int i;
     for(i = 1 ; i <= nRow; i++)
 	{
-		E->dspset[i]=(UC)atoi(pResult[i]);
-		printf("dspid in E:%d\n",E->dspset[i]);
+		E->ids[i]=(UC)atoi(pResult[i]);
+		printf("dspid in E:%d\n",E->ids[i]);
 	}
 	sqlite3_free_table(pResult);
 	/*

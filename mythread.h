@@ -6,12 +6,8 @@
 class mythread : public QThread
 {
     Q_OBJECT
-private:
-    Env *E;
-    Dsp *R;
-    int num;
 public:
-    mythread(Env*,Dsp*,int);
+    mythread();
 protected:
     void run();
 signals:

@@ -22,7 +22,7 @@
      <height>451</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -39,105 +39,6 @@
      <number>0</number>
     </property>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetDefaultConstraint</enum>
-      </property>
-      <item>
-       <widget class="QGroupBox" name="groupBox">
-        <property name="title">
-         <string>波特率</string>
-        </property>
-        <widget class="QRadioButton" name="rate1">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>20</y>
-           <width>108</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>9600</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="rate2">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>40</y>
-           <width>126</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>57600</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="rate3">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>60</y>
-           <width>152</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>115200</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="rate4">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>80</y>
-           <width>193</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>460800</string>
-         </property>
-        </widget>
-       </widget>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="auto_mode">
-        <property name="title">
-         <string>无人值守模式</string>
-        </property>
-        <widget class="QRadioButton" name="autodspf">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>40</y>
-           <width>37</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>关</string>
-         </property>
-        </widget>
-        <widget class="QRadioButton" name="autodspt">
-         <property name="geometry">
-          <rect>
-           <x>40</x>
-           <y>40</y>
-           <width>37</width>
-           <height>22</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>开</string>
-         </property>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="label">
@@ -148,8 +49,17 @@
       </item>
       <item>
        <widget class="QLineEdit" name="devices">
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>6</string>
+        </property>
+        <property name="maxLength">
+         <number>10</number>
         </property>
        </widget>
       </item>
@@ -162,6 +72,12 @@
       </item>
       <item>
        <widget class="QLineEdit" name="dsptimer">
+        <property name="maximumSize">
+         <size>
+          <width>50</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
          <string>10</string>
         </property>
@@ -170,7 +86,7 @@
       <item>
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>上报周期(小时)</string>
+         <string>上报周期(分钟)</string>
         </property>
        </widget>
       </item>
@@ -184,14 +100,114 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout"/>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="300,0">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
+        </property>
+        <item>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="title">
+           <string>DSP波特率(重启生效）</string>
+          </property>
+          <widget class="QRadioButton" name="rate1">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>20</y>
+             <width>108</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>9600</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rate2">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>40</y>
+             <width>126</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>57600</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rate3">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>60</y>
+             <width>152</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>115200</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="rate4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>80</y>
+             <width>193</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>460800</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="auto_mode">
+          <property name="title">
+           <string>无人值守模式（重启生效）</string>
+          </property>
+          <widget class="QRadioButton" name="autodspf">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>40</y>
+             <width>37</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>关</string>
+           </property>
+          </widget>
+          <widget class="QRadioButton" name="autodspt">
+           <property name="geometry">
+            <rect>
+             <x>40</x>
+             <y>40</y>
+             <width>37</width>
+             <height>22</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>开</string>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QPushButton" name="save">
         <property name="text">
-         <string>保存(重启生效)</string>
+         <string>保存</string>
         </property>
        </widget>
       </item>

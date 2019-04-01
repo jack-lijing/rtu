@@ -126,6 +126,7 @@ void i2ascii(char *ascii,unsigned char *number, int len);
 void ascii2i(unsigned char *number, char *ascii,int len);
 void printHexArray(unsigned char *hex, int len);
 void dumpBuffer(unsigned char *buffer, int elements);
+
 #ifdef __cplusplus
 }
 #endif

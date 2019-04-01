@@ -56,14 +56,12 @@ private:
     mythread *scanthd;
 
     Ui::MainWindow *ui;
-    shezhi sz;
+    shezhi *sz;
     canshubiao csb;
     zhuangtaibiao ztb;
-    int devices;
     int first;
-    int bandrate;
     void initDb();
-    void fillTable();
+    void fillTable(int);
 
 public slots:
     void showSZ();

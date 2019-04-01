@@ -16,10 +16,8 @@ class shezhi : public QWidget
 private:
     Ui::shezhi *ui;
     QSettings   *s;
-    int rate;
+    int dsprate;
     int autodsp;
-    Env *E;
-    Dsp *R;
 
 public:
     explicit shezhi(QWidget *parent = nullptr);

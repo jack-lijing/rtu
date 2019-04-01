@@ -10,12 +10,12 @@ class dspthread : public QThread
 {
     Q_OBJECT
 public:
-    dspthread(Env *E, Dsp *R);
+    dspthread();
+    ~dspthread(){
+    }
 protected:
     void run();
 private:
-    Env *E;
-    Dsp *R;
 
 signals:
     // status 0 正在查询  1 成功  2 失败

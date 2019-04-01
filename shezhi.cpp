@@ -1,5 +1,6 @@
 #include "shezhi.h"
 #include "ui_shezhi.h"
+#include <termios.h>
 
 shezhi::shezhi(QWidget *parent) :
     QWidget(parent),
@@ -7,26 +8,27 @@ shezhi::shezhi(QWidget *parent) :
 {
     ui->setupUi(this);
     s = new QSettings("/opt/rtu/config.ini", QSettings::IniFormat);
-    ui->devices->setText(s->value("devices").toString());
-    rate =  s->value("rate").toInt();
-    switch(rate)
+    //ui->devices->setText(s->value("devices").toString());
+    ui->devices->setText(QString::number(E->ini.devices,10));
+
+    dsprate =  s->value("dsprate").toInt();
+    switch(E->ini.dsprate)
     {
-        case 9600:
+        case B9600:
             ui->rate1->setChecked(true);
             break;
-        case 57600:
+        case B57600:
             ui->rate2->setChecked(true);
             break;
-        case 115200:
+        case B115200:
             ui->rate3->setChecked(true);
             break;
-        case 460800:
+        case B460800:
             ui->rate4->setChecked(true);
         break;
     }
 
-    autodsp = s->value("autodsp").toInt();
-    switch (autodsp) {
+    switch (E->ini.autodsp) {
         case 1:
             ui->autodspt->setChecked(true);
             break;
@@ -63,10 +65,15 @@ void shezhi::saveSZ()
 {
   //  set->setValue("rate",rate.text());
     s->setValue("devices",ui->devices->text());
-    s->setValue("rate",rate);
-    s->setValue("dtutimer",ui->dtutimer->text());
+    s->setValue("dsprate",dsprate);
     s->setValue("dsptimer",ui->dsptimer->text());
     s->setValue("autodsp",autodsp);
+    s->setValue("dtutimer",ui->dtutimer->text());
+
+    E->ini.devices = ui->devices->text().toInt();
+    E->ini.dsptimer = ui->devices->text().toInt();
+    E->ini.dtutimer = ui->devices->text().toInt();
+    E->ini.autodsp = ui->devices->text().toInt();
     emit quitSZ();
 }
 
@@ -78,22 +85,22 @@ void shezhi::cancelSZ()
 void shezhi::on_rate1_clicked()
 {
     ui->rate1->setChecked(true);
-    rate = 9600;
+    dsprate = 9600;
 }
 void shezhi::on_rate2_clicked()
 {
     ui->rate2->setChecked(true);
-    rate = 57600;
+    dsprate = 57600;
 }
 void shezhi::on_rate3_clicked()
 {
     ui->rate3->setChecked(true);
-    rate = 115200;
+    dsprate = 115200;
 }
 void shezhi::on_rate4_clicked()
 {
     ui->rate4->setChecked(true);
-    rate = 460800;
+    dsprate = 460800;
 }
 void shezhi::on_autodspf_clicked()
 {

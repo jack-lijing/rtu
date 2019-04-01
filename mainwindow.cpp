@@ -13,29 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     /***************读取配置文件************/
     first = 1;
-    set = new QSettings("/opt/rtu/config.ini", QSettings::IniFormat);
-    devices = set->value("devices").toInt();
-    int autodsp = set->value("autodsp").toInt();
-    int b = set->value("rate").toInt();
-    switch(b){
-    case 9600:
-        bandrate = B9600;
-        break;
-    case 57600:
-        bandrate = B57600;
-        break;
-    case 115200:
-        bandrate = B115200;
-        break;
-    case 460800:
-        bandrate = B460800;
-        break;
-    }
 
-    initEnv(bandrate);
+    initEnv();
 
-    runlog("",2,"RTU START:Devices %d DSPTimer %d minutes DTUTimer %d hours bandrate %d",
-           devices,set->value("dsptimer").toInt(),set->value("dtutimer").toInt(),b);
+    sz = new shezhi();
+
+    runlog("",2,"RTU START:Devices %d DSPTimer %d minutes DTUTimer %d hours bandrate %d", E->ini.devices,
+           E->ini.dsptimer, E->ini.dtutimer,E->ini.dsprate);
     ui->setupUi(this);
     ui->tz->setDisabled(true);
     /************ 槽响应 ******************/
@@ -46,22 +30,20 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->scan,SIGNAL(clicked()),this,SLOT(on_scan_clicked()));
     connect(ui->uploadlog,SIGNAL(clicked()),this,SLOT(on_uploadlog_clicked()));
 
-    connect(&sz,SIGNAL(quitSZ()), this, SLOT(hideSZ()));
+    connect(sz,SIGNAL(quitSZ()), this, SLOT(hideSZ()));
     connect(&csb,SIGNAL(quitCSB()), this, SLOT(hideCSB()));
     connect(&ztb,SIGNAL(quitZTB()), this, SLOT(hideZTB()));
 
     connect(ui->yx,SIGNAL(clicked()), this, SLOT(startRTU()));
     connect(ui->tz,SIGNAL(clicked()), this, SLOT(stopRTU()));
 
-
-
-    dspthd = new dspthread(E,R);
+    dspthd = new dspthread();
     connect(dspthd,SIGNAL(signal_dsp_status(int,int)), this, SLOT(displayDSP_slot(int,int)));
 
     dtuthd = new dtuthread(E);
     connect(dtuthd,SIGNAL(signal_dtu_status(int,int)), this, SLOT(displayDTU_slot(int,int)));
 
-    scanthd = new mythread(E,R,devices);
+    scanthd = new mythread();
     connect(scanthd,SIGNAL(signal_scan(int,int)), this, SLOT(scanDSP_slot(int,int)));
 
     /******显示时钟******/
@@ -70,30 +52,26 @@ MainWindow::MainWindow(QWidget *parent) :
     clockTimer->start(1000);
 
     /****如果无人值守模式开启，启动定时查询机制***/
-    if(autodsp == 1)startRTU();
+    if(E->ini.autodsp == 1)startRTU();
     //on_scan_clicked();
    // updateLog(E);
-    testdtu();
 }
 
 
 void MainWindow::startRTU()
 {
     runlog("",2,"Start QUERY DSP!");
-    set = new QSettings("/opt/rtu/config.ini", QSettings::IniFormat);
-    int dspintval = set->value("dsptimer").Int*1000*60;
-    int dtuintval = set->value("updatetimer").Int*1000*3600;
     /***********启动DSP查询线程 * (定时机制:发送信号) ************/
 
     queryDSP();     //不等待计数器，先执行第一次
     dspTimer = new QTimer(this);
     connect(dspTimer,SIGNAL(timeout()), this, SLOT(queryDSP()));
-    dspTimer->start(dspintval);
+    dspTimer->start(E->ini.dsptimer*1000*60);
 
     /***********启动DTU上报****************/
     dtuTimer =  new QTimer(this);
     connect(dtuTimer,SIGNAL(timeout()), this, SLOT(updateDTU()));
-    dtuTimer->start(dtuintval);
+    dtuTimer->start(E->ini.dtutimer*1000*60);
 
     /*****冻结按钮********/
     ui->yx->setDisabled(true);
@@ -149,11 +127,13 @@ void MainWindow::displayDSP_slot(int num, int status)
     {
         ui->dspprocess->setText("所有花盆异常，正在自动修复！");
         runlog("",2,"Try to reset dspfd!");
+        pthread_mutex_lock(&dsplock);
         Uart_close(E->dspfd);
-        sleep(5);
+        sleep(1);
         E->dspfd = Uart_open("/dev/ttymxc1");
         Uart_485(E->dspfd);
-        Uart_config(E->dspfd, bandrate);
+        Uart_config(E->dspfd, E->ini.dsprate);
+        pthread_mutex_unlock(&dsplock);
 
     }
 
@@ -166,7 +146,7 @@ void MainWindow::displayDSP_slot(int num, int status)
     if (num != 128 && status == 0)
     {
         ui->dspok->setText(ui->dspok->text()+QString::number(num,10)+" ");
-        fillTable();
+        fillTable(num);
     }
 
     if (num != 128 && status == -1)
@@ -174,28 +154,28 @@ void MainWindow::displayDSP_slot(int num, int status)
 
 }
 
-void MainWindow::fillTable()
+void MainWindow::fillTable(int n)
 {
-    ui->p0->setText(QString::number(R->param[0],10));
-    ui->p1->setText(QString::number(R->param[1],10));
-    ui->p2->setText(QString::number(R->param[2],10));
-    ui->p3->setText(QString::number(R->param[3],10));
-    ui->p4->setText(QString::number(R->param[4],10));
-    ui->p5->setText(QString::number(R->param[5],10));
-    ui->p6->setText(QString::number(R->param[6],10));
-    ui->p7->setText(QString::number(R->param[7],10));
-    ui->p8->setText(QString::number(R->param[8],10));
-    ui->p9->setText(QString::number(R->param[9],10));
-    ui->p10->setText(QString::number(R->param[10],10));
-    ui->p11->setText(QString::number(R->param[11],10));
+    ui->p0->setText(QString::number(E->dset[n].param[0],10));
+    ui->p1->setText(QString::number(E->dset[n].param[1],10));
+    ui->p2->setText(QString::number(E->dset[n].param[2],10));
+    ui->p3->setText(QString::number(E->dset[n].param[3],10));
+    ui->p4->setText(QString::number(E->dset[n].param[4],10));
+    ui->p5->setText(QString::number(E->dset[n].param[5],10));
+    ui->p6->setText(QString::number(E->dset[n].param[6],10));
+    ui->p7->setText(QString::number(E->dset[n].param[7],10));
+    ui->p8->setText(QString::number(E->dset[n].param[8],10));
+    ui->p9->setText(QString::number(E->dset[n].param[9],10));
+    ui->p10->setText(QString::number(E->dset[n].param[10],10));
+    ui->p11->setText(QString::number(E->dset[n].param[11],10));
 
-    ui->s0->setText(QString::number(R->status[0],10));
-    ui->s1->setText(QString::number(R->status[1],10));
-    ui->s2->setText(QString::number(R->status[2],10));
-    ui->s3->setText(QString::number(R->status[3],10));
-    ui->s4->setText(QString::number(R->status[4],10));
-    ui->s5->setText(QString::number(R->status[5],10));
-    ui->s6->setText(QString::number(R->status[6],10));
+    ui->s0->setText(QString::number(E->dset[n].status[0],10));
+    ui->s1->setText(QString::number(E->dset[n].status[1],10));
+    ui->s2->setText(QString::number(E->dset[n].status[2],10));
+    ui->s3->setText(QString::number(E->dset[n].status[3],10));
+    ui->s4->setText(QString::number(E->dset[n].status[4],10));
+    ui->s5->setText(QString::number(E->dset[n].status[5],10));
+    ui->s6->setText(QString::number(E->dset[n].status[6],10));
 }
 
 void MainWindow::displayDTU_slot(int dtu,int status)
@@ -243,7 +223,7 @@ void MainWindow::queryDSP()
 
 void MainWindow::showSZ()
 {
-    sz.show();
+    sz->show();
     this->hide();
 }
 
@@ -257,7 +237,7 @@ void MainWindow::showCSB()
 
 void MainWindow::hideSZ()
 {
-    sz.hide();
+    sz->hide();
     this->show();
 }
 
@@ -303,7 +283,7 @@ void MainWindow::on_resetdb_clicked()
 
 void MainWindow::on_scan_clicked()
 {
-    runlog("",2,"Scan DSP: %d",devices);
+    runlog("",2,"Scan DSP: %d",E->ini.devices);
     ui->yx->setDisabled(true);
     ui->tz->setDisabled(true);
     ui->sz->setDisabled(true);
@@ -348,7 +328,7 @@ void MainWindow::on_uploadlog_clicked()
 {
      //QProcess::execute("ls -t /root/ |grep 'log' | head -n 1 | xargs tar -cf /root/upload.gzip");
    // updateLog(E);
-   // initlocaltime(E);
-    testdtu();
+    initlocaltime(E);
+   // testdtu();
 
 }

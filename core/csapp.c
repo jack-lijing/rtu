@@ -647,7 +647,7 @@ int runlog(char * file, int line, char * msg, ...)
    FILE * fp;
    int fd;
    char rq[8+1];
-   char path[80], buff[3000];
+   char path[80], buff[5120];
 
 
    va_start(args, msg);
@@ -752,3 +752,4 @@ void dumpBuffer(unsigned char *buffer, int elements)
 	printf("]\n");
 	
 }
+
